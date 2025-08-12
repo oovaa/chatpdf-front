@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import {
   BrowserRouter as Router,
   Routes,
@@ -11,6 +11,8 @@ import Chat from './components/Chat'
 import NavBar from './components/NavBar'
 import About from './components/About'
 import Login from './components/Login'
+import Circle from './Circle'
+import PageTransition from './components/PageTransition'
 import { DocumentProvidedProvider } from './context/UploadedContext' // Adjust the import path accordingly
 import { Analytics } from '@vercel/analytics/react'
 
@@ -31,16 +33,19 @@ function App() {
 
   return (
     <div className="min-h-screen ">
+      <Circle />
       {/* rendering navbar on specific pages */}
       {['/about', '/upload', '/chat'].includes(location.pathname) && <NavBar />}
       <div>
-        <Routes>
-          <Route path="/" Component={Home} />
-          <Route path="/login" Component={Login} />
-          <Route path="/chat" Component={Chat} />
-          <Route path="/upload" Component={Upload} />
-          <Route path="/about" Component={About} />
-        </Routes>
+        <PageTransition>
+          <Routes>
+            <Route path="/" Component={Home} />
+            <Route path="/login" Component={Login} />
+            <Route path="/chat" Component={Chat} />
+            <Route path="/upload" Component={Upload} />
+            <Route path="/about" Component={About} />
+          </Routes>
+        </PageTransition>
       </div>
       <Analytics />
     </div>

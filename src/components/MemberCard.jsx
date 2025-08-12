@@ -1,4 +1,4 @@
-import React from 'react'
+import PropTypes from 'prop-types'
 
 const MemberCard = ({ name, image, description, links }) => {
   return (
@@ -29,6 +29,18 @@ const MemberCard = ({ name, image, description, links }) => {
       </div>
     </div>
   )
+}
+
+MemberCard.propTypes = {
+  name: PropTypes.string.isRequired,
+  image: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  links: PropTypes.arrayOf(
+    PropTypes.shape({
+      href: PropTypes.string.isRequired,
+      icon: PropTypes.string.isRequired,
+    })
+  ).isRequired,
 }
 
 export default MemberCard

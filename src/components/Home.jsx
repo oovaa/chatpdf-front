@@ -1,21 +1,34 @@
 import { Link } from 'react-router-dom'
+import PropTypes from 'prop-types'
 import './Home.css'
 
 const Home = () => {
-  const ButtonLink = ({ to, children, icon, flexBasis }) => (
+  const ButtonLink = ({ to, children, icon, flexBasis, className = '' }) => (
     <Link
       to={to}
-      className={`py-2 gap-3 px-5 md:text-lg flex items-center justify-center
+      className={`py-3 sm:py-2 gap-3 px-4 sm:px-5 text-base sm:text-lg md:text-lg 
+        flex items-center justify-center
         border-2 border-double border-green-950 hover:border-green-300
-        active:ring active:ring-offset-1 transition rounded-md font-semibold
+        active:ring active:ring-offset-1 transition-all duration-300 rounded-lg font-semibold
         hover:bg-green-900 hover:text-green-200 active:bg-green-950
-        ${to === '/upload' ? 'bg-green-950' : 'bg-transparent'}`}
+        focus:outline-none focus:ring-4 focus:ring-green-500/30
+        ${to === '/upload' ? 'bg-green-950' : 'bg-transparent'}
+        ${className}
+        mobile-button`}
       style={{ flex: flexBasis }}
     >
-      {icon && <img src={icon} alt="" className="w-5 h-5" />}
-      {children}
+      {icon && <img src={icon} alt="" className="w-5 h-5 sm:w-5 sm:h-5" />}
+      <span className="text-center">{children}</span>
     </Link>
   )
+
+  ButtonLink.propTypes = {
+    to: PropTypes.string.isRequired,
+    children: PropTypes.node.isRequired,
+    icon: PropTypes.string,
+    flexBasis: PropTypes.string,
+    className: PropTypes.string,
+  }
 
   return (
     <div className="home min-h-screen flex flex-col justify-between">
@@ -26,12 +39,13 @@ const Home = () => {
       </header>
 
       {/* Main Action Buttons */}
-      <main className="max-w-4xl w-full mx-auto px-4">
-        <div className="text-white flex flex-col gap-5 md:flex-row md:flex-wrap">
+      <main className="max-w-4xl w-full mx-auto px-4 sm:px-6">
+        <div className="text-white flex flex-col gap-4 sm:gap-5 md:flex-row md:flex-wrap">
           <ButtonLink
             to="/upload"
             icon="/assets/upload.svg"
-            flexBasis="1 0 calc(33.33% - 1rem)"
+            flexBasis="1 0 calc(50% - 0.625rem)"
+            className="mobile-optimized"
           >
             Upload File
           </ButtonLink>
@@ -39,12 +53,17 @@ const Home = () => {
           <ButtonLink
             to="/chat"
             icon="/assets/chat.svg"
-            flexBasis="1 0 calc(33.33% - 1rem)"
+            flexBasis="1 0 calc(50% - 0.625rem)"
+            className="mobile-optimized"
           >
             Start Chatting
           </ButtonLink>
 
-          <ButtonLink to="/about" flexBasis="1 0 100%">
+          <ButtonLink 
+            to="/about" 
+            flexBasis="1 0 100%"
+            className="mobile-optimized"
+          >
             About Us
           </ButtonLink>
         </div>
