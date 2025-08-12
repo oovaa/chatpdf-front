@@ -22,11 +22,6 @@ const NavBar = () => {
     navigate(path)
   }
 
-  const handleLogout = () => {
-    localStorage.removeItem('token')
-    handleNavigation('/login')
-  }
-
   useEffect(() => {
     const closeMenu = (e) => {
       if (

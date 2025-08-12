@@ -10,7 +10,7 @@ const Upload = () => {
   const [isDragging, setIsDragging] = useState(false)
   const [loading, setLoading] = useState(false)
   const [uploadStatus, setUploadStatus] = useState(null) // null | 'success' | 'error'
-  const { noDoc, setNoDoc } = useContext(DocumentProvidedContext)
+  const { setNoDoc } = useContext(DocumentProvidedContext)
   const { getToken } = useAuth()
 
   const handleDragOver = (e) => {
@@ -56,7 +56,7 @@ const Upload = () => {
       } else {
         setUploadStatus('error')
       }
-    } catch (error) {
+    } catch {
       setUploadStatus('error')
     } finally {
       setLoading(false)

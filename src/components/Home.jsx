@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import PropTypes from 'prop-types'
 import './Home.css'
 
 const Home = () => {
@@ -16,6 +17,13 @@ const Home = () => {
       {children}
     </Link>
   )
+
+  ButtonLink.propTypes = {
+    to: PropTypes.string.isRequired,
+    children: PropTypes.node.isRequired,
+    icon: PropTypes.string,
+    flexBasis: PropTypes.string,
+  }
 
   return (
     <div className="home min-h-screen flex flex-col justify-between">

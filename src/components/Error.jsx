@@ -1,4 +1,5 @@
 import { IoAlertCircleSharp } from 'react-icons/io5'
+import PropTypes from 'prop-types'
 
 const Error = ({ error, setError }) => {
   return (
@@ -29,6 +30,11 @@ const Error = ({ error, setError }) => {
       </div>
     </div>
   )
+}
+
+Error.propTypes = {
+  error: PropTypes.string.isRequired,
+  setError: PropTypes.func.isRequired,
 }
 
 export default Error

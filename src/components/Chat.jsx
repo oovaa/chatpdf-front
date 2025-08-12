@@ -5,6 +5,7 @@ import Error from './Error'
 import { DocumentProvidedContext } from '../context/UploadedContext'
 import './chat.css'
 import { SignedIn, SignedOut, SignInButton, useAuth } from '@clerk/clerk-react'
+import PropTypes from 'prop-types'
 
 const Chat = () => {
   const { noDoc } = useContext(DocumentProvidedContext)
@@ -25,6 +26,12 @@ const Chat = () => {
     </div>
   )
 
+  FeatureCard.propTypes = {
+    icon: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    text: PropTypes.string.isRequired,
+  }
+
   const Message = ({ content, isResponse }) => (
     <div className={`${isResponse ? 'rep' : 'msg'}`}>
       {isResponse ? (
@@ -34,6 +41,11 @@ const Chat = () => {
       )}
     </div>
   )
+
+  Message.propTypes = {
+    content: PropTypes.string.isRequired,
+    isResponse: PropTypes.bool.isRequired,
+  }
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
