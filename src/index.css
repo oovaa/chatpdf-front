@@ -17,26 +17,29 @@
 }
 
 .navBarItem {
-  @apply hover:text-green-200 transition hover:underline hover:animate-pulse hover:underline-offset-4  px-5 py-2;
+  @apply hover:text-green-200 transition hover:underline hover:animate-pulse hover:underline-offset-4 px-5 py-2;
 }
 
 .container {
-  @apply px-5 md:px-20 lg:px-40
+  @apply px-5 md:px-20 lg:px-40;
 }
 
 .links {
   opacity: 0.1;
   transition: 0.3s;
 }
+
 .members:hover .card {
   filter: grayscale(0.6);
   transition: 0.3s;
 }
+
 .card:hover {
   filter: grayscale(0) !important;
-  .links {
-    opacity: 1;
-  }
+}
+
+.card:hover .links {
+  opacity: 1;
 }
 
 @layer base {
@@ -50,15 +53,122 @@ body {
   background: radial-gradient(ellipse farthest-corner at bottom center, #052e16, #000000);
 }
 
-
+/* Custom scrollbar for better UX */
 ::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(8, 124, 76, 0.3);
+  border-radius: 10px;
+  transition: background-color 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(8, 124, 76, 0.6);
+}
+
+/* Hide scrollbar on mobile and for specific elements */
+.hide-scrollbar,
+.about {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar,
+.about::-webkit-scrollbar {
   display: none;
 }
 
+/* Focus styles for accessibility */
+button:focus-visible,
+input:focus-visible,
+a:focus-visible {
+  outline: 2px solid #34d399;
+  outline-offset: 2px;
+}
 
-.about {
-  -ms-overflow-style: none;
-  scrollbar-width: none; 
+/* Enhanced button transitions */
+.btn-enhanced {
+  @apply transition-all duration-300 ease-out;
+  transform: translateY(0);
+}
+
+.btn-enhanced:hover {
+  transform: translateY(-2px);
+}
+
+.btn-enhanced:active {
+  transform: translateY(0);
+}
+
+/* Skip link for screen readers */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: #087c4c;
+  color: white;
+  padding: 8px;
+  border-radius: 4px;
+  text-decoration: none;
+  z-index: 1000;
+  transition: top 0.3s;
+}
+
+.skip-link:focus {
+  top: 6px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .navBarItem {
+    border: 1px solid currentColor;
+  }
+  
+  .msg {
+    border: 2px solid #fff;
+  }
+  
+  .rep {
+    border: 2px solid #34d399;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .animate-pulse {
+    animation: none;
+  }
+  
+  .hover:animate-pulse:hover {
+    animation: none;
+  }
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  body {
+    background: white !important;
+    color: black !important;
+  }
 }
 
 @tailwind utilities;

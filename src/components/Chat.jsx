@@ -148,13 +148,18 @@ const Chat = () => {
         </div>
 
         <form
-          className="input-box flex-1 relative px-4 mb-4"
+          className="input-box sticky bottom-0 bg-gradient-to-t from-black/50 to-transparent backdrop-blur-sm px-4 pb-4 pt-2"
           onSubmit={handleSubmit}
         >
           <input
-            style={{ background: '#FFFFFF0D', border: '2px solid #FFFFFF4D' }}
             type="text"
-            className="outline-none rounded-lg py-3 px-5 w-full"
+            className="enhanced-input outline-none rounded-2xl py-4 px-6 pr-16 w-full
+                       bg-white/10 border-2 border-white/20 backdrop-blur-lg
+                       text-white placeholder-white/60
+                       focus:border-green-400/60 focus:bg-white/15 focus:scale-[1.02]
+                       transition-all duration-300 ease-out
+                       hover:border-white/30 hover:bg-white/12
+                       disabled:opacity-50 disabled:cursor-not-allowed"
             required
             placeholder={
               messages.length === 0
