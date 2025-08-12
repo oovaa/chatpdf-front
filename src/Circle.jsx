@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import './components/background-effects.css'
 
 const Circle = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })

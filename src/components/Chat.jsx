@@ -97,9 +97,9 @@ const Chat = () => {
   }
 
   return (
-    <div className="chat flex flex-col container mx-auto">
+    <div className="chat flex flex-col container mx-auto min-h-[calc(100vh-4rem)] relative">
       <SignedOut>
-        <p className="text-center mt-10">
+        <p className="text-center mt-10 px-4">
           You need to be signed in to access this page.
         </p>
         <SignInButton className="border rounded px-2 py-1 hover:bg-white hover:text-[#087C4C] transition-colors font-bold block mx-auto my-5" />
@@ -107,28 +107,28 @@ const Chat = () => {
       <SignedIn>
         {error && <Error error={error} setError={setError} />}
 
-        <div className="chat-box flex flex-col items-center justify-center">
+        <div className="chat-box flex flex-col items-center justify-center flex-1">
           {messages.length === 0 ? (
-            <div className="features flex max-md:flex-col justify-between gap-7 items-center container mx-auto min-h-[72vh] py-5">
+            <div className="features flex flex-col sm:flex-row justify-between gap-6 sm:gap-7 items-center container mx-auto min-h-[60vh] sm:min-h-[72vh] py-5 px-4">
               <FeatureCard
                 icon="/assets/feat1.svg"
                 title="Clear and precise"
-                text="Pariatur sint laborum cillum aute consectetur irure."
+                text="Get accurate and well-structured responses from your documents."
               />
               <FeatureCard
                 icon="/assets/feat2.svg"
                 title="Personalized answers"
-                text="Pariatur sint laborum cillum aute consectetur irure."
+                text="Receive contextual answers tailored to your specific questions."
               />
               <FeatureCard
                 icon="/assets/feat3.svg"
                 title="Increased efficiency"
-                text="Pariatur sint laborum cillum aute consectetur irure."
+                text="Save time by quickly finding information in your documents."
               />
             </div>
           ) : (
             <div className="mssgs-box py-2 flex w-full">
-              <div className="mssgs h-[calc(100vh-150px)] overflow-y-auto w-full">
+              <div className="mssgs h-[calc(100vh-200px)] sm:h-[calc(100vh-180px)] md:h-[calc(100vh-160px)] overflow-y-auto w-full px-2 sm:px-4">
                 {messages.map((msg, index) => (
                   <Message
                     key={index}
@@ -148,7 +148,7 @@ const Chat = () => {
         </div>
 
         <form
-          className="input-box sticky bottom-0 bg-gradient-to-t from-black/50 to-transparent backdrop-blur-sm px-4 pb-4 pt-2"
+          className="input-box sticky bottom-0 bg-gradient-to-t from-black/50 to-transparent backdrop-blur-sm px-2 sm:px-4 pb-4 pt-2"
           onSubmit={handleSubmit}
         >
           <input
