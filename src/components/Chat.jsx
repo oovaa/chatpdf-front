@@ -15,6 +15,7 @@ const Chat = () => {
   const [error, setError] = useState(null)
   const messagesEndRef = useRef(null)
   const { getToken } = useAuth()
+  const messageIdCounter = useRef(0)
 
   const API_URL = 'https://chatpdf-9g4j.onrender.com/api/v1/send'
 
@@ -82,7 +83,7 @@ const Chat = () => {
     // Add user message with unique ID for better React reconciliation
     setMessages((prev) => [
       ...prev,
-      { id: Date.now(), content: currentQuestion, isResponse: false },
+      { id: ++messageIdCounter.current, content: currentQuestion, isResponse: false },
     ])
     setInput('')
 
@@ -106,7 +107,7 @@ const Chat = () => {
       }
 
       const { answer } = await response.json()
-      setMessages((prev) => [...prev, { id: Date.now() + 1, content: answer, isResponse: true }])
+      setMessages((prev) => [...prev, { id: ++messageIdCounter.current, content: answer, isResponse: true }])
     } catch (err) {
       setError(err.message || 'Something went wrong.')
     } finally {
