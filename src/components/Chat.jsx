@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from 'react'
+import { useContext, useEffect, useRef, useState, useMemo, useCallback, memo } from 'react'
 import { marked } from 'marked'
 import Loading from './Loading'
 import Error from './Error'
@@ -18,13 +18,20 @@ const Chat = () => {
 
   const API_URL = 'https://chatpdf-9g4j.onrender.com/api/v1/send'
 
-  const FeatureCard = ({ icon, title, text }) => (
+  // Memoize input change handler to prevent recreation on every render
+  const handleInputChange = useCallback((e) => {
+    setInput(e.target.value)
+  }, [])
+
+  const FeatureCard = memo(({ icon, title, text }) => (
     <div className="flex gap-2 items-center flex-col">
       <img src={icon} alt={title} />
       <h3 className="font-bold">{title}</h3>
       <p className="text-center opacity-50">{text}</p>
     </div>
-  )
+  ))
+
+  FeatureCard.displayName = 'FeatureCard'
 
   FeatureCard.propTypes = {
     icon: PropTypes.string.isRequired,
@@ -32,28 +39,39 @@ const Chat = () => {
     text: PropTypes.string.isRequired,
   }
 
-  const Message = ({ content, isResponse }) => (
-    <div className={`${isResponse ? 'rep' : 'msg'}`}>
-      {isResponse ? (
-        <div dangerouslySetInnerHTML={{ __html: marked(content) }} />
-      ) : (
-        content
-      )}
-    </div>
-  )
+  const Message = memo(({ content, isResponse }) => {
+    // Memoize the marked conversion to avoid re-parsing on every render
+    const htmlContent = useMemo(() => {
+      return isResponse ? marked(content) : null
+    }, [content, isResponse])
+
+    return (
+      <div className={`${isResponse ? 'rep' : 'msg'}`}>
+        {isResponse ? (
+          <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
+        ) : (
+          content
+        )}
+      </div>
+    )
+  })
+
+  Message.displayName = 'Message'
 
   Message.propTypes = {
     content: PropTypes.string.isRequired,
     isResponse: PropTypes.bool.isRequired,
   }
 
-  const scrollToBottom = () => {
+  const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }
+  }, [])
 
-  useEffect(scrollToBottom, [messages])
+  useEffect(() => {
+    scrollToBottom()
+  }, [messages, scrollToBottom])
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = useCallback(async (e) => {
     e.preventDefault()
     if (!input.trim()) return
 
@@ -61,10 +79,10 @@ const Chat = () => {
     setLoading(true)
     const currentQuestion = input.trim()
 
-    // Add user message
+    // Add user message with unique ID for better React reconciliation
     setMessages((prev) => [
       ...prev,
-      { content: currentQuestion, isResponse: false },
+      { id: Date.now(), content: currentQuestion, isResponse: false },
     ])
     setInput('')
 
@@ -88,13 +106,13 @@ const Chat = () => {
       }
 
       const { answer } = await response.json()
-      setMessages((prev) => [...prev, { content: answer, isResponse: true }])
+      setMessages((prev) => [...prev, { id: Date.now() + 1, content: answer, isResponse: true }])
     } catch (err) {
       setError(err.message || 'Something went wrong.')
     } finally {
       setLoading(false)
     }
-  }
+  }, [input, noDoc, getToken])
 
   return (
     <div className="chat flex flex-col container mx-auto min-h-[calc(100vh-4rem)] relative">
@@ -129,9 +147,9 @@ const Chat = () => {
           ) : (
             <div className="mssgs-box py-2 flex w-full">
               <div className="mssgs h-[calc(100vh-200px)] sm:h-[calc(100vh-180px)] md:h-[calc(100vh-160px)] overflow-y-auto w-full px-2 sm:px-4">
-                {messages.map((msg, index) => (
+                {messages.map((msg) => (
                   <Message
-                    key={index}
+                    key={msg.id}
                     content={msg.content}
                     isResponse={msg.isResponse}
                   />
@@ -167,7 +185,7 @@ const Chat = () => {
                 : ''
             }
             value={input}
-            onChange={(e) => setInput(e.target.value)}
+            onChange={handleInputChange}
           />
           <button
             style={{
